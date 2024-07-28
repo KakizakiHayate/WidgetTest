@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ContentView: View {
     var body: some View {
@@ -19,9 +20,10 @@ struct ContentView: View {
             Button(action: {
                 let defaults = UserDefaults(suiteName: "group.com.hayate.dev.WidgetTanzamTest")
                 let currentValue = defaults?.bool(forKey: "shouldChangeUI") ?? false
-                defaults?.set(true, forKey: "shouldChangeUI")
+                defaults?.set(!currentValue, forKey: "shouldChangeUI")
                 if let shouldChangeUI = defaults?.bool(forKey: "shouldChangeUI") {
                     print("shouldChangeUI: \(shouldChangeUI)")
+//                    WidgetCenter.shared.reloadAllTimelines()
                 } else {
                     print("キー 'shouldChangeUI' が見つかりませんでした。")
                 }

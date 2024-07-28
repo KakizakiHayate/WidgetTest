@@ -15,7 +15,7 @@ struct Provider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), shouldChangeUI: UserDefaults.standard.bool(forKey: "shouldChangeUI"))
+        let entry = SimpleEntry(date: Date(), shouldChangeUI: userDefaults?.bool(forKey: "shouldChangeUI") ?? false)
         completion(entry)
     }
 
@@ -24,8 +24,18 @@ struct Provider: TimelineProvider {
 
         // 現在の日時を取得
         let currentDate = Date()
-        // 次の23時の日時を計算
-        let nextUpdateDate = Calendar.current.date(bySettingHour: 23, minute: 50, second: 0, of: currentDate)!
+//        // 次の23時の日時を計算
+//        let nextUpdateDate = Calendar.current.date(bySettingHour: 20, minute: 25, second: 0, of: currentDate)!
+
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.current
+
+        let targetHour = 20
+        let targetMinute = 39
+        var dateComponents = DateComponents()
+            dateComponents.hour = targetHour
+            dateComponents.minute = targetMinute
+        let nextUpdateDate = calendar.nextDate(after: currentDate, matching: dateComponents, matchingPolicy: .nextTime)!
 
         // UserDefaultsからフラグを取得
         let shouldChangeUI = userDefaults?.bool(forKey: "shouldChangeUI") ?? false
